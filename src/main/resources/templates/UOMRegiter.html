@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org/">
+<head>
+ <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script type="text/javascript">
+            
+        $(document).ready(function(){
+        	
+            //1. hide error section
+            $("#modalError").hide();
+//2. define error variable 
+            var modalError = false;
+            
+//3. define validate function
+            
+//4. link validate function with action-event
+            $("#uomModel").keyup(function(){
+            	
+                validate_ename(); //call validate function
+            });
+        });
+    
+
+</script>
+<script type="text/javascript">
+function validate_ename() {
+   
+
+ //a. read input value
+ var val = $("#uomModel").val();
+ 
+ //b. check condition
+ if(val=='') { //error exist
+     $("#modalError").show();
+     $("#modalError").html("Enter <b>Modal Name</b>");
+     $("#modalError").css("color","red");
+     modalError = false;
+ } else { //no error
+     $("#modalError").hide();
+     modalError = true;
+ }
+ return modalError;
+}
+</script>
+</head>
+<body>
+	<h3>WELCOME TO UOM REGISTER PAGE</h3>
+	<div class="container">
+		<form th:action="@{/uom/save}" method="POST" th:object="${uom}" onsubmit="return validate_ename()">
+			<div class="row">
+				<div class="col-3">
+					<label for="uomid">ID:</label>
+				</div>
+				<div class="col-5">
+					<input id="uomid" type="text" th:field="*{id}" readonly="true" />
+				</div>
+				<div class="col-4">
+					<span id="idError"></span>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-3">
+					<label for="uomType">UOMType:</label>
+				</div>
+				<div class="col-5">
+					<select th:field="*{uomType}">
+						<option value="-1">-SELECT--</option>
+						<option value="PACKING">PACKING</option>
+						<option value="NO PACKING">NO PACKING</option>
+						<option value="NA">NA</option>
+
+					</select>
+				</div>
+				<div class="col-4">
+					<span id="typeError"></span>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-3">
+					<label for="uomModel">UOM Modal:</label>
+				</div>
+				<div class="col-5">
+					<input type="text" th:field="*{uomModel}" />
+				</div>
+				<div class="col-4">
+					<span id="modalError"></span>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-3">
+					<label for="description">DESCRIPTION:</label>
+				</div>
+				<div class="col-5">
+					<textarea th:field="*{description}"></textarea>
+				</div>
+				<div class="col-4">
+					<span id="descError"></span>
+				</div>
+			</div>
+
+<input type="submit" value="ADD UOM" />
+
+		</form>
+	</div>
+	<span th:text="${message}"></span>
+</body>
+</html>
